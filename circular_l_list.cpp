@@ -88,7 +88,7 @@ void insert(int d, int pos, cl_list **dhead){
 void del_element_at_pos(int pos,cl_list **dhead){
     if(pos<=0||pos>length(*dhead)){
         cout<<"Wrong position input"<<endl;
-        return;
+        return; 
     }
     cl_list *current=*dhead;
     if(pos==1){
