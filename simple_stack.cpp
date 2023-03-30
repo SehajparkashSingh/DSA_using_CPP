@@ -7,13 +7,13 @@ struct stack{
     int capacity;    
 };
 stack *create_stack(int size= 20){
-    stack *s=(stack *)(malloc(sizeof(stack)));
+    stack *s=(stack *)(malloc(sizeof(stack)));           //memory allocation for stack
     if(!s){
         return NULL;
     }
     s->capacity=size;
-    s->top=-1;
-    s->arr=(int *)(malloc(s->capacity*sizeof(int)));
+    s->top=-1;                                           //initially, the stack is empty
+    s->arr=(int *)(malloc(s->capacity*sizeof(int)));     //memory allocation for stack capacity
     if(!s->arr){
         return NULL;
     }
@@ -45,7 +45,6 @@ void pop(stack *s){
     if(!empty(s)){
         //return (s->arr[s->top--]);
         cout<<*(s->arr+s->top--)<<endl;
-        //s->top--;
     }
     else{
         cout<<"Stack already empty"<<endl;

@@ -64,7 +64,7 @@ void pop(stack *s){
     else
         cout<<"The stack does not exist"<<endl<<endl;
 }
-void print_top_2_bottom(stack *s){        //recursive function
+void print_top_2_bottom(stack *s){        //recursive function   //works only single time
     if(s){
         if(!(empty(s))){
             static int size=s->capacity;
