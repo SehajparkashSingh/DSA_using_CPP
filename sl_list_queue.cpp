@@ -28,7 +28,6 @@ void enqueue(queue *q,int d){
     if(q){
         if(empty(q)){
             q->front=(l_list *)malloc(sizeof(l_list));
-            //q->rear=(l_list *)malloc(sizeof(l_list));
             q->rear=q->front;
 
             q->front->data=d;
@@ -67,7 +66,7 @@ void dequeue(queue *q){
         cout<<"Queue doesn't exist"<<endl<<endl;
     }
 }
-void delete_queue(queue **q){
+void del_queue(queue **q){
     if(*q){
         if((*q)->front){
             while((*q)->front){

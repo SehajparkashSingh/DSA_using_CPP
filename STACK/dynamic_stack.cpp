@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 struct stack{
@@ -64,6 +65,50 @@ void pop(stack *s){
     else
         cout<<"The stack does not exist"<<endl<<endl;
 }
+//used in reverse function and print function
+int pop1(stack *s){
+    if(s){
+        if(!empty(s)){
+            int d=s->arr[s->top];
+            //free(s->arr+s->top);       //or- free(s->arr[s->top])
+            s->top--;
+            //s->capacity--;
+            return d;
+        }
+        else{
+            return INT_MIN;
+        }
+    }
+    else
+        return INT_MIN;
+}
+void print_stack(stack *s){    //recursive function //prints top 2 bottom
+    if(!empty(s)){
+        int d=pop1(s);
+        cout<<d<<" ";
+        print_stack(s);
+        push(s,d);
+    }
+    else{
+        cout<<endl<<endl;
+        return;
+    }
+}
+int top_element(stack *s){
+    if(!empty(s))
+        return s->arr[s->top];
+    else
+        return -1;
+}
+void del_stack(stack **s){
+    if(*s){
+        if((*s)->arr){
+            free((*s)->arr);
+        }   
+        free(*s);
+        *s=NULL;
+    }
+}
 void print_top_2_bottom(stack *s){        //recursive function   //works only single time
     if(s){
         if(!(empty(s))){
@@ -83,39 +128,8 @@ void print_top_2_bottom(stack *s){        //recursive function   //works only si
     else
         cout<<"The stack does not exist"<<endl<<endl;   
 }
-int top_element(stack *s){
-    if(!empty(s))
-        return s->arr[s->top];
-    else
-        return -1;
-}
-void del_stack(stack **s){
-    if(*s){
-        if((*s)->arr){
-            free((*s)->arr);
-        }   
-        free(*s);
-        *s=NULL;
-    }
-}
-//used in reverse function
-int pop1(stack *s){
-    if(s){
-        if(!empty(s)){
-            int d=s->arr[s->top];
-            //free(s->arr+s->top);       //or- free(s->arr[s->top])
-            s->top--;
-            //s->capacity--;
-            return d;
-        }
-        else{
-            return -1;
-        }
-    }
-    else
-        return -1;
-}
-void recursive_reverse(stack *s){
+
+/*void recursive_reverse(stack *s){         //works just single time
     static int *temp=(int *)malloc(s->capacity*sizeof(int));
     static int size=s->capacity;
     static int i=0;
@@ -135,7 +149,7 @@ void recursive_reverse(stack *s){
         i=0;
     }
     return;
-}
+}*/
 
 //to obtain O(1) time complexity for getting minimum element in the stack
 //-------->
@@ -176,9 +190,9 @@ void push(stack_maintaining_min *s,int d){
 void pop(stack_maintaining_min *s){
     if(s){
         if(!empty(s)){
-            cout<<"Element of the main stack :";
+            cout<<"Main stack : ";
             pop(s->main);
-            cout<<"Element of the min stack :";
+            cout<<"Min stack : ";
             pop(s->min);
         }
         else
@@ -218,7 +232,7 @@ int main(){
     push(s,9);
     push(s,11);
     print_top_2_bottom(s);
-    recursive_reverse(s);
+    //recursive_reverse(s);
     //print_top_2_bottom(s);
     pop(s);
     pop(s);
