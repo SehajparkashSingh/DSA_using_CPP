@@ -190,6 +190,14 @@ void print_stack(stack *s,int size){   //prints top2bottom
     else
         cout<<"The stack is empty";
 }
+void del_stack(stack **s){
+    if(*s){
+        del_queue(&((*s)->q1));
+        del_queue(&((*s)->q2));
+        free(*s);
+    }
+    *s=NULL;
+}
 int main(){
     stack *s=create_stack(5);
     push(s,1);
