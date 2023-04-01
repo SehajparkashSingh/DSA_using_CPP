@@ -1,89 +1,6 @@
 #include <iostream>
 using namespace std;
 
-struct stack{
-    int top;
-    int *arr;
-    int capacity;    
-};
-stack *create_stack(int size= 1){
-    stack *s=(stack *)(malloc(sizeof(stack)));
-    if(!s){
-        return NULL;
-    }
-    s->capacity=size;
-    s->top=-1;
-    s->arr=(int *)(malloc(s->capacity*sizeof(int)));
-    if(!s->arr){
-        return NULL;
-    }
-    return s;
-}
-bool empty(stack *s){
-    if(s->top==-1)
-        return true;
-    else
-        return false;
-}
-bool full(stack *s){
-    if(s->top==s->capacity-1)
-        return true;
-    else
-        return false;
-}
-void push(stack *s,int d){
-    if(s){
-        if(full(s)){
-            s->capacity++;
-            s->arr=(int *)realloc(s->arr,s->capacity*sizeof(int));
-        }
-        s->top++;
-        //*(s->arr+s->top)==d; 
-        s->arr[s->top]=d;
-        return;
-    }
-    else
-        cout<<"The stack does not exist"<<endl<<endl;
-}
-int pop(stack *s){
-    if(s){
-        if(!empty(s)){
-            int d=*(s->arr+s->top--);
-            //cout<<"The element popped is :"<<d<<endl;
-            return d;
-        }
-        else{
-            cout<<"Stack is already empty"<<endl;
-            return INT_MIN;
-        }
-        cout<<endl;
-    }
-    else{
-        cout<<"The stack does not exist"<<endl<<endl;
-        return INT_MIN;
-    }
-}
-int top_element(stack *s){
-    if(s){
-        if(!empty(s)){
-            //cout<<s->arr[s->top]<<endl;
-            return s->arr[s->top]; 
-        }
-    }
-    else{
-        cout<<"Stack doesn't exist"<<endl<<endl;
-        return INT_MIN;
-    }
-}
-void del_stack(stack **s){
-    if(*s){
-        if((*s)->arr){
-            free((*s)->arr);
-        }   
-        free(*s);
-        *s=NULL;
-    }
-}
 //QUEUE
 struct queue{
     int *arr;
@@ -194,59 +111,119 @@ void del_queue(queue **q){
         *q=NULL;
     }
 }
-void print_stack(stack *s){    //recursive function, prints top2bottom
-    if(!empty(s)){
-        int d=pop(s);
-        cout<<d<<" ";
-        print_stack(s);
-        push(s,d);
+struct stack{
+    int top;
+    int *arr;
+    int capacity;    
+};
+stack *create_stack(int size= 1){
+    stack *s=(stack *)(malloc(sizeof(stack)));
+    if(!s){
+        return NULL;
     }
-    else{
-        cout<<endl<<endl;
+    s->capacity=size;
+    s->top=-1;
+    s->arr=(int *)(malloc(s->capacity*sizeof(int)));
+    if(!s->arr){
+        return NULL;
+    }
+    return s;
+}
+bool empty(stack *s){
+    if(s->top==-1)
+        return true;
+    else
+        return false;
+}
+bool full(stack *s){
+    if(s->top==s->capacity-1)
+        return true;
+    else
+        return false;
+}
+void push(stack *s,int d){
+    if(s){
+        if(full(s)){
+            s->capacity++;
+            s->arr=(int *)realloc(s->arr,s->capacity*sizeof(int));
+        }
+        s->top++;
+        //*(s->arr+s->top)==d; 
+        s->arr[s->top]=d;
         return;
-    }
-}
-void push_at_bottom(stack *s,int t){  //recursive function, puts 't' at bottom of stack
-    if(!empty(s)){
-        int k=pop(s);
-        push_at_bottom(s,t);
-        push(s,k);
-    }
-    else{
-        push(s,t);
-    }
-
-}
-void reverse_stack(stack **ds){  //recursive function
-    stack *s=*ds;
-    if(!empty(s)){
-        int t=pop(s);
-        reverse_stack(&s);
-        push_at_bottom(s,t);
     }
     else
+        cout<<"The stack does not exist"<<endl<<endl;
+}
+int pop(stack *s){
+    if(s){
+        if(!empty(s)){
+            int d=*(s->arr+s->top--);
+            //cout<<"The element popped is :"<<d<<endl;
+            return d;
+        }
+        else{
+            cout<<"Stack is already empty"<<endl;
+            return INT_MIN;
+        }
+        cout<<endl;
+    }
+    else{
+        cout<<"The stack does not exist"<<endl<<endl;
+        return INT_MIN;
+    }
+}
+void del_stack(stack **s){
+    if(*s){
+        if((*s)->arr){
+            free((*s)->arr);
+        }   
+        free(*s);
+        *s=NULL;
+    }
+}
+void print_queue(queue *q){
+    int temp=q->front;
+    int count=0;
+    while(count!=q->present_sz){
+        cout<<q->arr[temp]<<" ";
+        if(temp==q->capacity-1)
+            temp=0;
+        else    
+            temp++;
+        count++;
+    }
+    cout<<endl<<endl;
+}
+void reverse_with_stack(queue *q){
+    stack *s=create_stack(q->present_sz);
+    while(!empty(q))
+        push(s,dequeue(q));
+    while(!empty(s))
+        enqueue(q,pop(s));
+    del_stack(&s);
+}
+void reverse_queue(queue *q){      //recursive function
+    if(!empty(q)){
+       int t=dequeue(q);
+       reverse_queue(q);
+       enqueue(q,t);   
+    }
+    else 
         return;
 }
-void reverse_with_queue(stack *s){
-    queue *q=create_queue(s->capacity);
-    while(!empty(s)){
-        enqueue(q,pop(s));
-    }
-    while(!empty(q)){
-        push(s,dequeue(q));
-    }
-    del_queue(&q);
-}
 int main(){
-    stack *s=create_stack(8);
-    push(s,1);
-    push(s,2);
-    push(s,3);
-    push(s,4);
-    push(s,5);
-    print_stack(s);
-    reverse_stack(&s);
-    print_stack(s);
-    reverse_with_queue(s);
-    print_stack(s);
+    queue *q=create_queue(5);
+    enqueue(q,1);
+    enqueue(q,2);
+    enqueue(q,3);
+    enqueue(q,4);
+    enqueue(q,5);
+    enqueue(q,6);
+    print_queue(q);
+    reverse_with_stack(q);
+    print_queue(q);
+    reverse_queue(q);
+    print_queue(q);
+    return 0;
 }

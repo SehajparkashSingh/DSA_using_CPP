@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 using namespace std;
 
 struct stack{
@@ -82,7 +81,7 @@ int pop1(stack *s){
     else
         return INT_MIN;
 }
-void print_stack(stack *s){    //recursive function //prints top 2 bottom
+void print_stack(stack *s){    //recursive function, prints top 2 bottom
     if(!empty(s)){
         int d=pop1(s);
         cout<<d<<" ";

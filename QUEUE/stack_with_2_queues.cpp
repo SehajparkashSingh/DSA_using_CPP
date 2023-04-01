@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+
 struct queue{
     int *arr;
     int capacity;
@@ -77,26 +78,28 @@ void enqueue(queue *q,int d){
     }
     return;
 }
-void dequeue(queue *q){
+int dequeue(queue *q){
+    int d;
     if(!empty(q)){
         if(q->present_sz>1){          //q->front!=q->rear
             if(q->front!=q->capacity-1){
-                cout<<"The element at the front is :"<<q->arr[q->front++]<<endl<<endl;
+                d=q->arr[q->front++];
             }
             else{
-                cout<<"The element at the front is :"<<q->arr[q->front]<<endl<<endl;
+                d=q->arr[q->front];
                 q->front=0;
             }
         }
         else{                  //q->front==q->rear
-            cout<<"The element at the front is :"<<q->arr[q->front]<<endl<<endl;
+            d=q->arr[q->front];
             q->front=q->rear=-1;
         }
         q->present_sz--;
+        return d;
     }
     else
         cout<<"Queue already empty"<<endl<<endl;
-    return;
+    return INT_MIN;
 }
 void del_queue(queue **q){
     if(*q){
@@ -107,6 +110,101 @@ void del_queue(queue **q){
         *q=NULL;
     }
 }
+
+struct stack{
+    queue *q1;
+    queue *q2;
+};
+stack *create_stack(int size){
+    stack *s=(stack *)malloc(sizeof(stack));
+    s->q1=create_queue(size);
+    s->q2=create_queue(size);
+    return s;
+}
+bool empty(stack *s){
+    return(empty(s->q1) && empty(s->q2));
+}
+void push(stack *s,int d){
+    if(empty(s->q1) && empty(s->q2))
+        enqueue(s->q1,d);
+    else if(!empty(s->q1))
+        enqueue(s->q1,d);
+    else
+        enqueue(s->q2,d);
+    return;
+}
+int pop(stack *s){
+    if(!empty(s)){
+        if(!empty(s->q1)){
+            int size=s->q1->present_sz;
+            for(int i=0;i<size-1;i++){
+                enqueue(s->q2,dequeue(s->q1));
+            }
+            return dequeue(s->q1);
+        }
+        else{
+            int size=s->q2->present_sz;
+            for(int i=0;i<size-1;i++){
+                enqueue(s->q1,dequeue(s->q2));
+            }
+            return dequeue(s->q2);
+        }
+    }
+    else{
+        cout<<"The stack is empty"<<endl<<endl;
+        return INT_MIN;
+    }
+}
+int size(stack *s){
+    if(!empty(s)){
+        if(!empty(s->q1)){
+            return s->q1->present_sz;
+        }
+        else{
+            return s->q2->present_sz;
+        }
+    }
+    else{
+        return 0;
+    }
+}
+void print_stack(stack *s,int size){   //prints top2bottom
+    if(!empty(s)){
+        if(size){
+            if(!empty(s->q1)){
+                int t=dequeue(s->q1);
+                enqueue(s->q1,t);
+                print_stack(s,--size);
+                cout<<t<<" ";
+            }
+            else{
+                int t=dequeue(s->q2);
+                enqueue(s->q2,t);
+                print_stack(s,--size);
+                cout<<t<<" ";
+            }
+        }
+        else
+            return;     
+    }
+    else
+        cout<<"The stack is empty";
+}
 int main(){
-    
+    stack *s=create_stack(5);
+    push(s,1);
+    push(s,2);
+    push(s,3);
+    push(s,4);
+    push(s,5);
+    print_stack(s,size(s));
+    cout<<endl<<endl;
+    cout<<pop(s)<<" "<<pop(s)<<" "<<pop(s)<<endl<<endl;
+    print_stack(s,size(s));
+    cout<<endl<<endl; 
+    cout<<pop(s)<<" "<<pop(s)<<" "<<endl<<endl; 
+    print_stack(s,size(s));
+    cout<<endl<<endl;  
+    cout<<"Size:"<<size(s)<<endl<<endl;
+    return 0;
 }

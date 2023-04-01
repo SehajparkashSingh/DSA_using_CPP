@@ -206,36 +206,25 @@ void print_stack(stack *s){    //recursive function, prints top2bottom
         return;
     }
 }
-void push_at_bottom(stack *s,int t){  //recursive function, puts 't' at bottom of stack
-    if(!empty(s)){
-        int k=pop(s);
-        push_at_bottom(s,t);
-        push(s,k);
-    }
-    else{
-        push(s,t);
-    }
-
-}
-void reverse_stack(stack **ds){  //recursive function
-    stack *s=*ds;
-    if(!empty(s)){
-        int t=pop(s);
-        reverse_stack(&s);
-        push_at_bottom(s,t);
-    }
-    else
-        return;
-}
-void reverse_with_queue(stack *s){
+void check_consecutive_pairs(stack *s){
+    cout<<"Top element is ignored in case of odd no. of elements"<<endl;
     queue *q=create_queue(s->capacity);
-    while(!empty(s)){
+    while(!empty(s))
         enqueue(q,pop(s));
-    }
-    while(!empty(q)){
+    while(!empty(q))
         push(s,dequeue(q));
+    while(!empty(s)){
+        int a=pop(s);
+        if(!empty(s)){
+            int b=pop(s);
+            if(abs(a-b)!=1){
+                cout<<"Not all pairs are consecutive"<<endl<<endl;
+                return;
+            }
+        }
     }
-    del_queue(&q);
+    cout<<"All the pairs are consecutive"<<endl<<endl;
+    return;
 }
 int main(){
     stack *s=create_stack(8);
@@ -243,10 +232,8 @@ int main(){
     push(s,2);
     push(s,3);
     push(s,4);
-    push(s,5);
+    push(s,8);
     print_stack(s);
-    reverse_stack(&s);
-    print_stack(s);
-    reverse_with_queue(s);
-    print_stack(s);
+    check_consecutive_pairs(s);
+    return 0;
 }
