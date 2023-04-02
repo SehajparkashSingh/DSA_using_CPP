@@ -115,7 +115,7 @@ struct stack{
     queue *q1;
     queue *q2;
 };
-stack *create_stack(int size){
+stack *create_stack(int size=8){
     stack *s=(stack *)malloc(sizeof(stack));
     s->q1=create_queue(size);
     s->q2=create_queue(size);
