@@ -63,18 +63,6 @@ int pop(stack *s){
         return INT_MIN;
     }
 }
-void print_stack(stack *s){    //recursive function, prints top 2 bottom
-    if(!empty(s)){
-        int d=pop(s);
-        cout<<d<<" ";
-        print_stack(s);
-        push(s,d);
-    }
-    else{
-        cout<<endl<<endl;
-        return;
-    }
-}
 void del_stack(stack **s){
     if(*s){
         if((*s)->arr){
@@ -160,7 +148,7 @@ void del_queue(queue **q){
     }
 }
 int main(){
-    queue *q=create_queue(5);
+    queue *q=create_queue(4);
     enqueue(q,1);
     enqueue(q,2);
     enqueue(q,3);
