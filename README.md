@@ -1,2 +1,2 @@
 # C++ code
-contains code for various functions on LINKED LIST , STACK , QUEUE
+contains code for various functions on LINKED LISTS , STACKS , QUEUES
