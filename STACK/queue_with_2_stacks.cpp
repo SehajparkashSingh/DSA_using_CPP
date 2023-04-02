@@ -4,7 +4,7 @@ using namespace std;
 struct stack{
     int top;
     int *arr;
-    int capacity;    
+    int capacity ;    
 };
 stack *create_stack(int size= 1){
     stack *s=(stack *)(malloc(sizeof(stack)));
