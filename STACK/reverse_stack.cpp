@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 struct stack{
@@ -249,4 +250,46 @@ int main(){
     print_stack(s);
     reverse_with_queue(s);
     print_stack(s);
+    string q="bbxbb";
+    int ind;
+    int l=q.length();
+    int i;
+       for(i=0;i<l;i++){
+            if(q[i]=='a'){
+                continue;
+            }
+            else if(q[i]!='a'){
+                ind=i;
+                break;
+            }
+       }
+       if(i==l){
+        q[i-1]='b';
+       }
+       else if(l%2==0){
+        q[ind]='a';
+       }
+       else if(ind+1==(l/2)+1){
+        q[l-1]='b';
+       }
+       else {
+        q[ind]='a';
+       }
+       cout<<q<<endl;
+
+       q="gagadeab";
+       l=q.length();
+       int j;
+       int la=0;
+       for(j=1;j<l;j++){
+            if(q[j]>q[j-1]){
+                la=j;
+            }
+       }
+       if(la>0){
+        char t=q[la];
+        q[la]=q[la-1];
+        q[la-1]=t;
+       }
+       cout<<q<<endl;
 }
