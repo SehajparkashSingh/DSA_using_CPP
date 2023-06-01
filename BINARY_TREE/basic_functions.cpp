@@ -560,29 +560,7 @@ bool check_mirror(struct bt *root_1, struct bt *root_2){
     else    
         return false;
 }
-bt *inorder_preorder_2_binary_tree(int *inorder,int *preorder,int inorder_length){
-    struct bt *root=NULL;
-    struct bt **droot=&root;
-    root=new_node(preorder[0]);
-    //int i=0;
-    int e1=preorder[0];
-    int j=0;
-    while(inorder[j]!=e1)   
-        j++;
-    if(j>0){
-        root->left=inorder_preorder_2_binary_tree(inorder,preorder+1,j);
-        root->right=inorder_preorder_2_binary_tree(inorder+j+1,preorder+j+1,inorder_length-j-1);
-    }
-    else if(j==0){
-        root->left=NULL;
-        root->right=inorder_preorder_2_binary_tree(inorder+j+1,preorder+j+1,inorder_length-j-1);
-    }
-    else if(j==inorder_length-1){
-        root->left=inorder_preorder_2_binary_tree(inorder,preorder+1,j);
-        root->right=NULL;
-    }
-    return root;    
-}
+
 int ancestors(bt *root,int data,int anc[],int len){
     if(root){
         if(root->data==data){
@@ -756,6 +734,58 @@ bool check_quasi_isomorphism_with_data(bt *root_1,bt *root_2){
         return true;
     }
 }
+
+bt *preorder_2_binary_tree(char preorder[],int *i){
+    struct bt *root;
+    if(preorder[*i]=='I'){
+        root=new_node(1);
+        *i=*i+1;
+        root->left=preorder_2_binary_tree(preorder,i);
+        root->right=preorder_2_binary_tree(preorder,i);
+    }
+    else if(preorder[*i]=='L'){
+        root=new_node(0);
+        *i=*i+1;
+        root->left=NULL;
+        root->right=NULL;
+    }
+    return root;
+}
+bt *inorder_preorder_2_binary_tree(int *inorder,int *preorder,int inorder_length){
+    struct bt *root=NULL;
+    root=new_node(preorder[0]);
+    int e1=preorder[0];
+    int j=-1;
+    while(inorder[j]!=e1 && j<inorder_length)   
+        j++;
+    if(j>0 && j<inorder_length-1){
+        root->left=inorder_preorder_2_binary_tree(inorder,preorder+1,j);
+        root->right=inorder_preorder_2_binary_tree(inorder+j+1,preorder+j+1,inorder_length-j-1);
+    }
+    else if(j==0){
+        root->left=NULL;
+        if(inorder_length-j-1>0)
+            root->right=inorder_preorder_2_binary_tree(inorder+j+1,preorder+j+1,inorder_length-j-1);
+        else
+            root->right=NULL;
+    }
+    else if(j==inorder_length-1){
+        root->left=inorder_preorder_2_binary_tree(inorder,preorder+1,j);
+        root->right=NULL;
+    }
+    else if(j==-1){
+        return NULL;
+    }
+    return root;    
+}
+bt *inorder_levelorder_2_binary_tree(int *inorder,int *levelorder,int inorder_length,int levelorder_length){
+    struct bt *root=new_node(levelorder[0]);
+    int e1=levelorder[0];
+    int j=-1;
+    while(inorder[j]!=e1)
+        j++;
+    
+}
 int main(){
     struct bt *root_1=NULL;
     struct bt **droot_1=&root_1;
@@ -823,9 +853,6 @@ int main(){
     level_order_traversal(root_2);
     cout<<endl;
     cout<<"BT_1 and BT_2 are mirrors or not: "<<((check_mirror(root_1,root_2))?("YES"):("NO"))<<endl;
-    int inorder[]={1,2,3,4,5,6};
-    int preorder[]={4,2,1,3,6,5};
-    //struct bt *root_3=inorder_preorder_2_binary_tree(inorder,preorder,6);
     int *anc=new int[1];
     int len=ancestors(root_2,8,anc,0);
     if(len!=-1){
@@ -847,7 +874,23 @@ int main(){
     cout<<"BT_1 and BT_2 are quasi-isomorphic or not: "<<((check_quasi_isomorphism(root_1,root_2))?("YES"):("NO"))<<endl;
     cout<<"BT_1 and BT_1 are quasi-isomorphic or not: "<<((check_quasi_isomorphism(root_1,root_1))?("YES"):("NO"))<<endl;    
     cout<<"BT_1 and BT_2 are quasi-isomorphic(with data) or not: "<<((check_quasi_isomorphism_with_data(root_1,root_2))?("YES"):("NO"))<<endl;
+    
+    //'I'/1=>Internal node ; 'L'/0=>Leaf node  ; children=0/2
+    char pre_order[]={'I','I','I','L','L','I','L','I','L','L','I','L','L'};
+    int i=0; 
+    struct bt *root_preorder=preorder_2_binary_tree(pre_order,&i);
+    cout<<"PRE-ORDER traversal: ";
+    pre_order_traversal_recursive(root_preorder);
+    cout<<endl;
 
+    int inorder[]={1,2,3,4,5,6};
+    int preorder[]={4,2,1,3,6,5};
+    struct bt *root_3=inorder_preorder_2_binary_tree(inorder,preorder,6);
+    cout<<"PRE-ORDER traversal: ";
+    pre_order_traversal_recursive(root_3);
+    cout<<endl<<"IN-ORDER traversal: ";
+    in_order_traversal_recursive(root_3);
+    cout<<endl;
     //del_tree(droot_1);
     //pre_order_traversal(root_1);
 }
