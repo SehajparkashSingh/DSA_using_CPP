@@ -257,7 +257,8 @@ int height_of_tree(struct bt *root){
             if(q->size==0){
                 break;
             }
-            enqueue(q,NULL);
+            else
+                enqueue(q,NULL);
         }
     }
     return (height-1);
