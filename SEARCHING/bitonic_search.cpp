@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-//An array is 3)-B#)7 if it is comprised of an increasing sequence 
+//An array is BITONIC if it is comprised of an increasing sequence 
 //of integers followed immediately 
 //by a decreasing sequence of integers.
 
