@@ -1,7 +1,7 @@
 # C++ code
-contains code for various functions on :
-LINKED LISTS , 
-STACKS , 
+# Contains code for various functions on :
+% LINKED LISTS , 
+% STACKS , 
 QUEUES , 
 BINARY TREES , 
 BINARY SEARCH TREES , 
